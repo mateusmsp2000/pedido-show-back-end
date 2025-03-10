@@ -19,8 +19,16 @@ type PedidoService struct {
 	filaPedidos IFilaPedidosService
 }
 
-func NewPedidoService(pedidoRepo repositories2.IPedidoRepository, userRepo repositories2.IUsuarioRepository, showRepo repositories2.IShowRepository, filaPedidos IFilaPedidosService) IPedidoService {
-	return &PedidoService{pedidoRepo: pedidoRepo, userRepo: userRepo, showRepo: showRepo, filaPedidos: filaPedidos}
+func NewPedidoService(
+	pedidoRepo repositories2.IPedidoRepository,
+	userRepo repositories2.IUsuarioRepository,
+	showRepo repositories2.IShowRepository,
+	filaPedidos IFilaPedidosService) IPedidoService {
+	return &PedidoService{
+		pedidoRepo:  pedidoRepo,
+		userRepo:    userRepo,
+		showRepo:    showRepo,
+		filaPedidos: filaPedidos}
 }
 
 func (s *PedidoService) Criar(pedido dtos.PedidoDTO) error {

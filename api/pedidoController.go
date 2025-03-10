@@ -18,7 +18,7 @@ func NewPedidoController(service application.IPedidoService) *PedidoController {
 func (c *PedidoController) Criar(ctx *gin.Context) {
 	var pedido dtos.PedidoDTO
 	if err := ctx.ShouldBindJSON(&pedido); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Dados inválidos"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "dados inválidos"})
 		return
 	}
 
@@ -28,13 +28,13 @@ func (c *PedidoController) Criar(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "Pedido criado com sucesso"})
+	ctx.JSON(http.StatusCreated, gin.H{"message": "pedido criado com sucesso"})
 }
 
 func (c *PedidoController) ObterTodos(ctx *gin.Context) {
 	pedidos, err := c.service.ObterTodos()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar pedidos"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "erro ao buscar pedidos"})
 		return
 	}
 

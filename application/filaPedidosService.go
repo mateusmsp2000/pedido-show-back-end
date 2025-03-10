@@ -9,7 +9,7 @@ import (
 type IFilaPedidosService interface {
 	Publicar(pedido dtos.PedidoDTO)
 	Processar()
-	ObterFilaPedidos() chan dtos.PedidoDTO // Método público para acessar o canal
+	ObterFilaPedidos() chan dtos.PedidoDTO
 }
 
 type FilaPedidosService struct {
@@ -37,5 +37,5 @@ func (f *FilaPedidosService) Processar() {
 }
 
 func (f *FilaPedidosService) ObterFilaPedidos() chan dtos.PedidoDTO {
-	return f.filaPedidos // Método público para acessar o canal
+	return f.filaPedidos
 }

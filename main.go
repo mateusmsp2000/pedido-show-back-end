@@ -9,16 +9,25 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 func initDB() (*gorm.DB, error) {
-	// Conectando ao banco de dados SQLite
-	db, err := gorm.Open(sqlite.Open("./infrastructure/db.sqlite"), &gorm.Config{})
+
+	dbPath := "./infrastructure/pedido.db"
+
+	if _, err := os.Stat("./infrastructure"); os.IsNotExist(err) {
+		err := os.MkdirAll("./infrastructure", os.ModePerm)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
 
-	// Rodando migrações automaticamente para garantir que as tabelas sejam criadas
 	err = db.AutoMigrate(&entities.Usuario{}, &entities.Show{}, &entities.Pedido{})
 	if err != nil {
 		return nil, err
@@ -28,13 +37,11 @@ func initDB() (*gorm.DB, error) {
 }
 
 func main() {
-	// Inicializando o banco de dados
 	db, err := initDB()
 	if err != nil {
 		log.Fatalf("Erro ao conectar ao banco de dados: %v", err)
 	}
 
-	// Criando o repositório com GORM
 	pedidoRepo := repositories2.NewPedidoRepository(db)
 	userRepo := repositories2.NewUsuarioRepository(db)
 	showRepo := repositories2.NewShowRepository(db)
@@ -47,20 +54,14 @@ func main() {
 	filaPedidos := application.NewFilaPedidosService(100)
 	go filaPedidos.Processar()
 
-	// Criando o serviço com o repositório
 	pedidoService := application.NewPedidoService(pedidoRepo, userRepo, showRepo, filaPedidos)
 
-	// Criando o controlador com o serviço
 	pedidoController := api.NewPedidoController(pedidoService)
-
-	// Inicializando o Gin e criando as rotas
 	r := gin.Default()
 
-	// Definindo rotas para a API
-	r.POST("/pedidos", pedidoController.Criar)     // Criar pedido
-	r.GET("/pedidos", pedidoController.ObterTodos) // Listar pedidos
+	r.POST("/api/pedidos", pedidoController.Criar)
+	r.GET("/api/pedidos", pedidoController.ObterTodos)
 
-	// Iniciando o servidor na porta 8080
 	if err := r.Run(":5001"); err != nil {
 		log.Fatalf("Erro ao iniciar o servidor: %v", err)
 	}
