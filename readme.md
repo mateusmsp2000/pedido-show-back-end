@@ -11,20 +11,20 @@ Esta aplicação permite criar pedidos de shows, gravando os pedidos em banco de
 
 - **Cadastro de pedidos de shows** (informando dados específicos).
 - **Listagem de pedidos de shows**.
-1. **Mensageria interna com Go Goroutines**:
-    - Explicação de que o sistema usa goroutines e canais internos para gerenciar a comunicação e notificação de pedidos processados com sucesso.
-    - Alteração no texto da funcionalidade para refletir o uso de goroutines para mensageria.
-
-2. **Exemplo de código**:
-    - Foi incluído um exemplo simples de como as goroutines e canais são usados para enviar notificações internas.
-
+- **Mensageria interna com Go Goroutines**: Quando um pedido é realizado com sucesso, uma goroutine é disparada para enviar a notificação de que o pedido foi efetuado com sucesso. Essa comunicação ocorre de forma assíncrona e interna, utilizando a funcionalidade de goroutines e canais do Go, garantindo que o serviço continue funcionando de maneira eficiente sem bloquear o fluxo principal da aplicação.
 
 ## Como executar a aplicação
 
-> **Observação:** É necessário ter o Docker instalado na máquina para utilizar a abordagem abaixo.
+> **Observação:** É necessário ter o Docker instalado na máquina para utilizar a primeira abordagem abaixo.
 
 ```bash
 docker-compose up --build
+```
+
+ou executar o seguinte comando na raiz do projeto
+
+```bash
+go run .
 ```
 
 ## Disponibilidade
@@ -39,7 +39,7 @@ O **Gorm** é um ORM (Object Relational Mapping) utilizado para gerenciar a cria
 ### **Gin**
 O **Gin** é utilizado para possibilitar requisições REST na API. Ele é um framework web em Go que oferece alta performance, facilitando a criação de endpoints e manipulação de rotas de maneira rápida e eficiente.
 
-## Utilizações
+## Mecanismos utilizados no desenvolvimento
 
 ### **Interfaces**
 Interfaces são amplamente utilizadas para garantir a separação de preocupações no projeto. Elas permitem que as dependências sejam passadas de forma flexível, tornando o código mais modular e testável.
