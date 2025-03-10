@@ -39,7 +39,7 @@ O **Gorm** é um ORM (Object Relational Mapping) utilizado para gerenciar a cria
 ### **Gin**
 O **Gin** é utilizado para possibilitar requisições REST na API. Ele é um framework web em Go que oferece alta performance, facilitando a criação de endpoints e manipulação de rotas de maneira rápida e eficiente.
 
-## Mecanismos utilizados no desenvolvimento
+## Abordagens e Ferramentas de Desenvolvimento Utilizadas
 
 ### **Interfaces**
 Interfaces são amplamente utilizadas para garantir a separação de preocupações no projeto. Elas permitem que as dependências sejam passadas de forma flexível, tornando o código mais modular e testável.
@@ -80,7 +80,7 @@ Os **testes unitários** são essenciais para garantir que as partes do sistema 
 
 Após a criação do pedido com sucesso será emitido uma mensageria para que outros services como o de faturamento tenham conhecimento que o pedido foi criado com sucesso.
 
-Pedido processado e realizado pagamento com sucesso! ShowID: %s, UserID: %d
+<ins>Pedido processado e realizado pagamento com sucesso! ShowID: %s, UserID: %d</ins>
 
 ## Validações
 * usuário não encontrado -> ocorre quando não encontra o usuário através do id informado.
