@@ -1,15 +1,15 @@
 package repositories
 
 import (
-	"PedidoShow/models"
+	"PedidoShow/domain/entities"
 	"fmt"
 	"gorm.io/gorm"
 )
 
 type IUsuarioRepository interface {
-	Criar(usuario models.Usuario) error
+	Criar(usuario entities.Usuario) error
 	Remover(id uint) error
-	ObterPorID(id uint) (models.Usuario, error)
+	ObterPorID(id uint) (entities.Usuario, error)
 }
 
 type UsuarioRepository struct {
@@ -20,7 +20,7 @@ func NewUsuarioRepository(db *gorm.DB) IUsuarioRepository {
 	return &UsuarioRepository{db: db}
 }
 
-func (repo *UsuarioRepository) Criar(usuario models.Usuario) error {
+func (repo *UsuarioRepository) Criar(usuario entities.Usuario) error {
 	if err := repo.db.Create(&usuario).Error; err != nil {
 		return fmt.Errorf("erro ao salvar usuario: %w", err)
 	}
@@ -28,14 +28,14 @@ func (repo *UsuarioRepository) Criar(usuario models.Usuario) error {
 }
 
 func (repo *UsuarioRepository) Remover(id uint) error {
-	if err := repo.db.Delete(&models.Usuario{}, id).Error; err != nil {
+	if err := repo.db.Delete(&entities.Usuario{}, id).Error; err != nil {
 		return fmt.Errorf("erro ao remover usuário: %w", err)
 	}
 	return nil
 }
 
-func (repo *UsuarioRepository) ObterPorID(id uint) (models.Usuario, error) {
-	var usuario models.Usuario
+func (repo *UsuarioRepository) ObterPorID(id uint) (entities.Usuario, error) {
+	var usuario entities.Usuario
 	if err := repo.db.First(&usuario, id).Error; err != nil {
 		return usuario, err
 	}

@@ -1,9 +1,9 @@
-package services_test
+package application_test
 
 import (
+	"PedidoShow/application"
+	"PedidoShow/domain/entities"
 	"PedidoShow/dtos"
-	"PedidoShow/models"
-	"PedidoShow/services"
 	"errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -15,26 +15,26 @@ type MockPedidoRepository struct {
 	mock.Mock
 }
 
-func (m *MockPedidoRepository) Criar(pedido models.Pedido) error {
+func (m *MockPedidoRepository) Criar(pedido entities.Pedido) error {
 	args := m.Called(pedido)
 	return args.Error(0)
 }
 
-func (m *MockPedidoRepository) ObterTodos() ([]models.Pedido, error) {
+func (m *MockPedidoRepository) ObterTodos() ([]entities.Pedido, error) {
 	args := m.Called()
-	return args.Get(0).([]models.Pedido), args.Error(1)
+	return args.Get(0).([]entities.Pedido), args.Error(1)
 }
 
 type MockUsuarioRepository struct {
 	mock.Mock
 }
 
-func (m *MockUsuarioRepository) ObterPorID(id uint) (models.Usuario, error) {
+func (m *MockUsuarioRepository) ObterPorID(id uint) (entities.Usuario, error) {
 	args := m.Called(id)
-	return args.Get(0).(models.Usuario), args.Error(1)
+	return args.Get(0).(entities.Usuario), args.Error(1)
 }
 
-func (m *MockUsuarioRepository) Criar(usuario models.Usuario) error {
+func (m *MockUsuarioRepository) Criar(usuario entities.Usuario) error {
 	args := m.Called(usuario)
 	return args.Error(0)
 }
@@ -48,7 +48,7 @@ type MockShowRepository struct {
 	mock.Mock
 }
 
-func (m *MockShowRepository) Criar(show models.Show) error {
+func (m *MockShowRepository) Criar(show entities.Show) error {
 	args := m.Called(show)
 	return args.Error(0)
 }
@@ -58,9 +58,9 @@ func (m *MockShowRepository) Remover(id string) error {
 	return args.Error(0)
 }
 
-func (m *MockShowRepository) ObterPorID(id string) (models.Show, error) {
+func (m *MockShowRepository) ObterPorID(id string) (entities.Show, error) {
 	args := m.Called(id)
-	return args.Get(0).(models.Show), args.Error(1)
+	return args.Get(0).(entities.Show), args.Error(1)
 }
 
 type MockFilaPedidosService struct {
@@ -88,7 +88,7 @@ func TestPedidoService_Criar(t *testing.T) {
 	filaPedidosService := new(MockFilaPedidosService)
 
 	// Criando o serviço
-	pedidoService := services.NewPedidoService(pedidoRepo, usuarioRepo, showRepo, filaPedidosService)
+	pedidoService := application.NewPedidoService(pedidoRepo, usuarioRepo, showRepo, filaPedidosService)
 
 	// Criando o DTO de pedido
 	pedidoDTO := dtos.PedidoDTO{
@@ -97,8 +97,8 @@ func TestPedidoService_Criar(t *testing.T) {
 	}
 
 	// Configurando as expectativas dos mocks
-	usuarioRepo.On("ObterPorID", uint(1)).Return(models.Usuario{ID: 1}, nil)
-	showRepo.On("ObterPorID", "123456").Return(models.Show{ID: "123456"}, nil)
+	usuarioRepo.On("ObterPorID", uint(1)).Return(entities.Usuario{ID: 1}, nil)
+	showRepo.On("ObterPorID", "123456").Return(entities.Show{ID: "123456"}, nil)
 	pedidoRepo.On("Criar", mock.Anything).Return(nil)
 	filaPedidosService.On("Publicar", mock.Anything).Return()
 
@@ -123,7 +123,7 @@ func TestPedidoService_Criar_UsuarioNaoEncontrado(t *testing.T) {
 	filaPedidosService := new(MockFilaPedidosService)
 
 	// Criando o serviço
-	pedidoService := services.NewPedidoService(pedidoRepo, usuarioRepo, showRepo, filaPedidosService)
+	pedidoService := application.NewPedidoService(pedidoRepo, usuarioRepo, showRepo, filaPedidosService)
 
 	// Criando o DTO de pedido
 	pedidoDTO := dtos.PedidoDTO{
@@ -132,7 +132,7 @@ func TestPedidoService_Criar_UsuarioNaoEncontrado(t *testing.T) {
 	}
 
 	// Configurando as expectativas dos mocks
-	usuarioRepo.On("ObterPorID", uint(1)).Return(models.Usuario{}, errors.New("usuário não encontrado"))
+	usuarioRepo.On("ObterPorID", uint(1)).Return(entities.Usuario{}, errors.New("usuário não encontrado"))
 
 	// Chamando o método Criar e verificando se o erro esperado ocorre
 	err := pedidoService.Criar(pedidoDTO)
@@ -156,7 +156,7 @@ func TestPedidoService_Criar_ShowNaoEncontrado(t *testing.T) {
 	filaPedidosService := new(MockFilaPedidosService)
 
 	// Criando o serviço
-	pedidoService := services.NewPedidoService(pedidoRepo, usuarioRepo, showRepo, filaPedidosService)
+	pedidoService := application.NewPedidoService(pedidoRepo, usuarioRepo, showRepo, filaPedidosService)
 
 	// Criando o DTO de pedido
 	pedidoDTO := dtos.PedidoDTO{
@@ -165,8 +165,8 @@ func TestPedidoService_Criar_ShowNaoEncontrado(t *testing.T) {
 	}
 
 	// Configurando as expectativas dos mocks
-	usuarioRepo.On("ObterPorID", uint(1)).Return(models.Usuario{ID: 1}, nil)
-	showRepo.On("ObterPorID", "123456").Return(models.Show{}, errors.New("show não encontrado"))
+	usuarioRepo.On("ObterPorID", uint(1)).Return(entities.Usuario{ID: 1}, nil)
+	showRepo.On("ObterPorID", "123456").Return(entities.Show{}, errors.New("show não encontrado"))
 
 	// Chamando o método Criar e verificando se o erro esperado ocorre
 	err := pedidoService.Criar(pedidoDTO)

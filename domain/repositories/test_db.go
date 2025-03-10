@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"PedidoShow/models"
+	"PedidoShow/domain/entities"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -14,7 +14,7 @@ func InitTestDB() (*gorm.DB, error) {
 	}
 
 	// Rodando as migrações para garantir que as tabelas existam
-	err = db.AutoMigrate(&models.Pedido{}, &models.Usuario{}, &models.Show{})
+	err = db.AutoMigrate(&entities.Pedido{}, &entities.Usuario{}, &entities.Show{})
 	if err != nil {
 		return nil, err
 	}

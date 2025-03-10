@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"PedidoShow/models"
+	"PedidoShow/domain/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -16,14 +16,14 @@ func TestCriarShow(t *testing.T) {
 	repo := NewShowRepository(db)
 
 	// Criando um show
-	show := models.Show{ID: "123456", Name: "Show do Gustavo Lima"}
+	show := entities.Show{ID: "123456", Name: "Show do Gustavo Lima"}
 
 	// Chamando o método Criar
 	err = repo.Criar(show)
 	assert.Nil(t, err)
 
 	// Verificando se o show foi inserido no banco
-	var result models.Show
+	var result entities.Show
 	err = db.First(&result, "id = ?", show.ID).Error
 	assert.Nil(t, err)
 	assert.Equal(t, result.Name, show.Name)
@@ -39,7 +39,7 @@ func TestRemoverShow(t *testing.T) {
 	repo := NewShowRepository(db)
 
 	// Criando um show
-	show := models.Show{ID: "123456", Name: "Show do Gustavo Lima"}
+	show := entities.Show{ID: "123456", Name: "Show do Gustavo Lima"}
 	err = repo.Criar(show)
 	assert.Nil(t, err)
 
@@ -48,7 +48,7 @@ func TestRemoverShow(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Verificando se o show foi removido do banco
-	var result models.Show
+	var result entities.Show
 	err = db.First(&result, "id = ?", show.ID).Error
 	assert.Error(t, err) // Espera-se que o show não seja encontrado, ou seja, erro
 }
@@ -63,7 +63,7 @@ func TestObterShowPorID(t *testing.T) {
 	repo := NewShowRepository(db)
 
 	// Criando um show
-	show := models.Show{ID: "123456", Name: "Show do Gustavo Lima"}
+	show := entities.Show{ID: "123456", Name: "Show do Gustavo Lima"}
 	err = repo.Criar(show)
 	assert.Nil(t, err)
 

@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"PedidoShow/models"
+	"PedidoShow/domain/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -16,7 +16,7 @@ func TestCriarPedido(t *testing.T) {
 	repo := NewPedidoRepository(db)
 
 	// Criando um pedido
-	pedido := models.Pedido{
+	pedido := entities.Pedido{
 		ShowID: "123456",
 		UserID: 1,
 	}
@@ -26,7 +26,7 @@ func TestCriarPedido(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Verificando se o pedido foi inserido no banco
-	var pedidos []models.Pedido
+	var pedidos []entities.Pedido
 	err = db.Find(&pedidos).Error
 	assert.Nil(t, err)
 	assert.Len(t, pedidos, 1)
@@ -44,7 +44,7 @@ func TestObterTodosPedidos(t *testing.T) {
 	repo := NewPedidoRepository(db)
 
 	// Inserindo alguns pedidos para teste
-	pedidos := []models.Pedido{
+	pedidos := []entities.Pedido{
 		{ShowID: "123456", UserID: 1},
 		{ShowID: "789101", UserID: 2},
 	}

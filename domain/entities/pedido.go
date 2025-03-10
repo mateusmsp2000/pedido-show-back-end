@@ -1,4 +1,4 @@
-package models
+package entities
 
 type Pedido struct {
 	ID      uint    `gorm:"primaryKey"`

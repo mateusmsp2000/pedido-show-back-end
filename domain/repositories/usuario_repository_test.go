@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"PedidoShow/models"
+	"PedidoShow/domain/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -16,14 +16,14 @@ func TestCriarUsuario(t *testing.T) {
 	repo := NewUsuarioRepository(db)
 
 	// Criando um usuário
-	usuario := models.Usuario{Name: "João Palesmano"}
+	usuario := entities.Usuario{Name: "João Palesmano"}
 
 	// Chamando o método Criar
 	err = repo.Criar(usuario)
 	assert.Nil(t, err)
 
 	// Verificando se o usuário foi inserido no banco
-	var result models.Usuario
+	var result entities.Usuario
 	err = db.First(&result, "name = ?", usuario.Name).Error
 	assert.Nil(t, err)
 	assert.Equal(t, result.Name, usuario.Name)
@@ -39,7 +39,7 @@ func TestRemoverUsuario(t *testing.T) {
 	repo := NewUsuarioRepository(db)
 
 	// Criando um usuário
-	usuario := models.Usuario{Name: "João Palesmano"}
+	usuario := entities.Usuario{Name: "João Palesmano"}
 	err = repo.Criar(usuario)
 	assert.Nil(t, err)
 
@@ -48,7 +48,7 @@ func TestRemoverUsuario(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Verificando se o usuário foi removido do banco
-	var result models.Usuario
+	var result entities.Usuario
 	err = db.First(&result, "id = ?", usuario.ID).Error
 	assert.Error(t, err) // Espera-se que o usuário não seja encontrado
 }
@@ -63,7 +63,7 @@ func TestObterUsuarioPorID(t *testing.T) {
 	repo := NewUsuarioRepository(db)
 
 	// Criando um usuário
-	usuario := models.Usuario{ID: 1, Name: "João Palesmano"}
+	usuario := entities.Usuario{ID: 1, Name: "João Palesmano"}
 	err = repo.Criar(usuario)
 	assert.Nil(t, err)
 

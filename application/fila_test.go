@@ -1,8 +1,8 @@
-package fila_test
+package application_test
 
 import (
+	"PedidoShow/application"
 	"PedidoShow/dtos"
-	"PedidoShow/fila"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -10,7 +10,7 @@ import (
 
 func TestPublicarPedido(t *testing.T) {
 	// Inicializa a fila com tamanho 1 para o teste
-	filaService := fila.NewFilaPedidosService(1)
+	filaService := application.NewFilaPedidosService(1)
 
 	// Criar um pedido de exemplo
 	pedido := dtos.PedidoDTO{
@@ -33,7 +33,7 @@ func TestPublicarPedido(t *testing.T) {
 
 func TestProcessarPedidos(t *testing.T) {
 	// Inicializa a fila com capacidade 3
-	filaService := fila.NewFilaPedidosService(3)
+	filaService := application.NewFilaPedidosService(3)
 
 	// Criar alguns pedidos de exemplo
 	pedidos := []dtos.PedidoDTO{

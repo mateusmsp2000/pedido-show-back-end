@@ -1,10 +1,9 @@
-package services
+package application
 
 import (
+	"PedidoShow/domain/entities"
+	repositories2 "PedidoShow/domain/repositories"
 	"PedidoShow/dtos"
-	"PedidoShow/fila"
-	"PedidoShow/models"
-	"PedidoShow/repositories"
 	"errors"
 )
 
@@ -14,13 +13,13 @@ type IPedidoService interface {
 }
 
 type PedidoService struct {
-	pedidoRepo  repositories.IPedidoRepository
-	userRepo    repositories.IUsuarioRepository
-	showRepo    repositories.IShowRepository
-	filaPedidos fila.IFilaPedidosService
+	pedidoRepo  repositories2.IPedidoRepository
+	userRepo    repositories2.IUsuarioRepository
+	showRepo    repositories2.IShowRepository
+	filaPedidos IFilaPedidosService
 }
 
-func NewPedidoService(pedidoRepo repositories.IPedidoRepository, userRepo repositories.IUsuarioRepository, showRepo repositories.IShowRepository, filaPedidos fila.IFilaPedidosService) IPedidoService {
+func NewPedidoService(pedidoRepo repositories2.IPedidoRepository, userRepo repositories2.IUsuarioRepository, showRepo repositories2.IShowRepository, filaPedidos IFilaPedidosService) IPedidoService {
 	return &PedidoService{pedidoRepo: pedidoRepo, userRepo: userRepo, showRepo: showRepo, filaPedidos: filaPedidos}
 }
 
@@ -35,7 +34,7 @@ func (s *PedidoService) Criar(pedido dtos.PedidoDTO) error {
 		return errors.New("show não encontrado")
 	}
 
-	err = s.pedidoRepo.Criar(models.Pedido{
+	err = s.pedidoRepo.Criar(entities.Pedido{
 		UserID: pedido.UserID,
 		ShowID: pedido.ShowID,
 	})

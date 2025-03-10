@@ -1,17 +1,17 @@
-package controllers
+package api
 
 import (
+	"PedidoShow/application"
 	"PedidoShow/dtos"
-	"PedidoShow/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type PedidoController struct {
-	service services.IPedidoService
+	service application.IPedidoService
 }
 
-func NewPedidoController(service services.IPedidoService) *PedidoController {
+func NewPedidoController(service application.IPedidoService) *PedidoController {
 	return &PedidoController{service: service}
 }
 
